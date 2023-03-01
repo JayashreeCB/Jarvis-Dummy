@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33403.182
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jarvis Dummy", "Jarvis Dummy\Jarvis Dummy.csproj", "{BA61064E-1564-4108-BA6F-5D43DE1E5592}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA61064E-1564-4108-BA6F-5D43DE1E5592}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA61064E-1564-4108-BA6F-5D43DE1E5592}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA61064E-1564-4108-BA6F-5D43DE1E5592}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA61064E-1564-4108-BA6F-5D43DE1E5592}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7AFD047D-AB33-407A-B611-943F8D0E175D}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  jarvisdummy:
+    image: ${DOCKER_REGISTRY-}jarvisdummy
+    build:
+      context: .
+      dockerfile: Jarvis Dummy/Dockerfile
+
+  jarvisdummy-dapr:
+    image: "daprio/daprd:latest"
+    command: [ "./daprd", "-app-id", "Jarvis_Dummy", "-app-port", "80" ]    
+    depends_on:
+           - jarvisdummy
+    network_mode: "service:jarvisdummy"
+    volumes:
+           - C:/Users/developer/.dapr/components/statestore.yaml:/Jarvis Dummy/Components

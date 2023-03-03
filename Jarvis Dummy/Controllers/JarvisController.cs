@@ -1,6 +1,8 @@
-﻿using Jarvis_Dummy.Context;
+﻿using Dapr.Client;
+using Jarvis_Dummy.Context;
 using Jarvis_Dummy.Model;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Metrics;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,10 +14,14 @@ namespace Jarvis_Dummy.Controllers
     {
         private ILogger<JarvisController> _logger;
         private JarvisContext _context;
-        public JarvisController(ILogger<JarvisController> logger , JarvisContext context)
+        private readonly IRepository _repository;
+        
+        
+        public JarvisController(ILogger<JarvisController> logger , JarvisContext context, IRepository repository)
         {
             _logger = logger;
-            _context = context;
+            _context = context;       
+            _repository = repository;
         }
         // GET: api/<JarvisController>
         [HttpGet]
@@ -24,16 +30,21 @@ namespace Jarvis_Dummy.Controllers
             return Ok( _context.getJarvisInfos.ToList<GetJarvisInfo>());
         }
 
+       
+
         // GET api/<JarvisController>/5
         [HttpGet("{SingpassID}")]
-        public ActionResult<IList<GetJarvisInfo>> Get(String SingpassID)
+        public async Task<ActionResult<IList<GetJarvisInfo>>> Get(String SingpassID)
         {
-            return Ok( _context.getJarvisInfos.FirstOrDefault(a => a.SingpassID == SingpassID));
+
+            GetJarvisInfo info = _context.getJarvisInfos.FirstOrDefault(a => a.SingpassID == SingpassID);
+            await _repository.GetUserStateAsync(SingpassID);            
+            return Ok(info);
         }
 
         // POST api/<JarvisController>
         [HttpPost]
-        public ActionResult<IList<GetJarvisInfo>> Post()
+        public async Task< ActionResult<IList<GetJarvisInfo>>> Post()
         {
             GetJarvisInfo info = new GetJarvisInfo
             {
@@ -75,6 +86,7 @@ namespace Jarvis_Dummy.Controllers
             
             _context.getJarvisInfos.Add(info);
             _context.SaveChanges();
+            await _repository.SaveUserStateAsync(info);
             return Ok(_context.getJarvisInfos.ToList<GetJarvisInfo>());
         }
 

@@ -15,31 +15,71 @@ namespace Jarvis_Dummy.Controllers
         private ILogger<JarvisController> _logger;
         private JarvisContext _context;
         private readonly IRepository _repository;
-        
-        
-        public JarvisController(ILogger<JarvisController> logger , JarvisContext context, IRepository repository)
+
+
+        public JarvisController(ILogger<JarvisController> logger, JarvisContext context, IRepository repository)
         {
             _logger = logger;
-            _context = context;       
+            _context = context;
             _repository = repository;
         }
         // GET: api/<JarvisController>
-        [HttpGet]
+        [HttpGet("[action]")]       
+        [ActionName("GetJarvisUserInfo")]
         public ActionResult<IList<GetJarvisInfo>> Get()
         {
-            return Ok( _context.getJarvisInfos.ToList<GetJarvisInfo>());
+            return Ok(_context.getJarvisInfos.ToList<GetJarvisInfo>());
         }
 
-       
-
         // GET api/<JarvisController>/5
-        [HttpGet("{SingpassID}")]
+        [HttpGet("[action]/{SingpassID}")]
+        [ActionName("UserInfoBySingpassID")]
         public async Task<ActionResult<IList<GetJarvisInfo>>> Get(String SingpassID)
         {
 
             GetJarvisInfo info = _context.getJarvisInfos.FirstOrDefault(a => a.SingpassID == SingpassID);
-            await _repository.GetUserStateAsync(SingpassID);            
+            await _repository.GetUserStateAsync(SingpassID);
             return Ok(info);
+        }
+
+        [HttpGet("[action]/{Postalcode}")]
+        [ActionName("GetAddress")]
+        public async Task<ActionResult<Getaddress>> GetAddress(int Postalcode)
+        {
+            if (Postalcode == 0)
+            {
+                return BadRequest();
+            }
+            Getaddress address = new Getaddress();
+                var  info = _context.getJarvisInfos.FirstOrDefault(a => a.BBA_PostalCode == Postalcode);
+            if (info != null)
+            {
+
+                address.PostalCode = info.BBA_PostalCode;
+                address.Country = info.BBA_Country;
+                address.BlockNumber = info.BBA_BlockNumber;
+                address.BuildingName = info.BBA_BuildingName;
+                address.LevelNumber = info.BBA_LevelNumber;
+                address.StreetName = info.BBA_StreetName;
+                address.UnitNumber = info.BBA_UnitNumber;
+                              
+            }
+            var info1 = _context.getJarvisInfos.FirstOrDefault(a => a.BMA_PostalCode == Postalcode);
+            if (info1 != null)
+            {
+                address.PostalCode = info.BMA_PostalCode;
+                address.Country = info.BMA_Country;
+                address.BlockNumber = info.BMA_BlockNumber;
+                address.BuildingName = info.BMA_BuildingName;
+                address.LevelNumber = info.BMA_LevelNumber;
+                address.StreetName = info.BMA_StreetName;
+                address.UnitNumber = info.BMA_UnitNumber;
+            }
+           if (info == null && info1 == null) { 
+                return NotFound();
+            }
+            return Ok(address);
+
         }
 
         // POST api/<JarvisController>
@@ -86,7 +126,7 @@ namespace Jarvis_Dummy.Controllers
             
             _context.getJarvisInfos.Add(info);
             _context.SaveChanges();
-            await _repository.SaveUserStateAsync(info);
+           // await _repository.SaveUserStateAsync(info);
             return Ok(_context.getJarvisInfos.ToList<GetJarvisInfo>());
         }
 

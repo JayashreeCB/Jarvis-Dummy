@@ -67,13 +67,13 @@ namespace Jarvis_Dummy.Controllers
             var info1 = _context.getJarvisInfos.FirstOrDefault(a => a.BMA_PostalCode == Postalcode);
             if (info1 != null)
             {
-                address.PostalCode = info.BMA_PostalCode;
-                address.Country = info.BMA_Country;
-                address.BlockNumber = info.BMA_BlockNumber;
-                address.BuildingName = info.BMA_BuildingName;
-                address.LevelNumber = info.BMA_LevelNumber;
-                address.StreetName = info.BMA_StreetName;
-                address.UnitNumber = info.BMA_UnitNumber;
+                address.PostalCode = info1.BMA_PostalCode;
+                address.Country = info1.BMA_Country;
+                address.BlockNumber = info1.BMA_BlockNumber;
+                address.BuildingName = info1.BMA_BuildingName;
+                address.LevelNumber = info1.BMA_LevelNumber;
+                address.StreetName = info1.BMA_StreetName;
+                address.UnitNumber = info1.BMA_UnitNumber;
             }
            if (info == null && info1 == null) { 
                 return NotFound();
